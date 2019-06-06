@@ -1,45 +1,48 @@
-package com.example.calling;
+package com.example.listview;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    EditText txt;
-    Button calling;
+    Spinner list;
+    String data[] = {"Ram", "Shyam", "Mohan", "Laxman"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt = (EditText) findViewById(R.id.no);
-        calling = (Button) findViewById(R.id.dial);
-        calling.setOnClickListener(new View.OnClickListener() {
+        list = (Spinner) findViewById(R.id.list_view);
+        ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, data);
+        list.setAdapter(adapter);
+        list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                String txt1 = txt.getText().toString();
-                if (TextUtils.isEmpty(txt1)) {
-                    txt.setError("Enter number");
-                } else {
-                    if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 0);
-                    } else {
-                        Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + txt1));
-                        startActivity(i);
-                    }
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch(position)
+                {
+                    case 0:
+                        Toast.makeText(MainActivity.this,"First",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                    Toast.makeText(MainActivity.this,"Second",Toast.LENGTH_SHORT).show();
+                    break;
+                    case 2:
+                    Toast.makeText(MainActivity.this,"Third",Toast.LENGTH_SHORT).show();
+                    break;
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
     }
-
 }
